@@ -4,8 +4,8 @@ CREATE TABLE IF NOT EXISTS Nodes
 (
     node_id         bigint              PRIMARY KEY,
     version         int                 NOT NULL DEFAULT 1,
-    latitude        double precision    NOT NULL,
-    longitude       double precision    NOT NULL,
+    latitude        double precision    NOT NULL CHECK (latitude >= -90 AND latitude <= 90),
+    longitude       double precision    NOT NULL CHECK (longitude >= -180 AND longitude <= 180),
     timestamp       timestamp           NOT NULL,
 
     user_id         int                 NOT NULL
