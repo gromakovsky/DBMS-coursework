@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS Nodes
     version         int                 NOT NULL DEFAULT 1,
     latitude        double precision    NOT NULL CHECK (latitude >= -90 AND latitude <= 90),
     longitude       double precision    NOT NULL CHECK (longitude >= -180 AND longitude <= 180),
-    timestamp       timestamp           NOT NULL,
+    timestamp       timestamp           NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     user_id         int                 NOT NULL
 );
@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS Ways
 (
     way_id          bigint              PRIMARY KEY,
     version         int                 NOT NULL DEFAULT 1,
-    timestamp       timestamp           NOT NULL,
+    timestamp       timestamp           NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     user_id         int                 NOT NULL
 );
@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS Relations
 (
     relation_id     bigint              PRIMARY KEY,
     version         int                 NOT NULL DEFAULT 1,
-    timestamp       timestamp           NOT NULL,
+    timestamp       timestamp           NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     user_id         int                 NOT NULL
 );
