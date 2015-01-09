@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS Ways
 (
     way_id          bigint              PRIMARY KEY,
     version         int                 NOT NULL DEFAULT 1,
+    timestamp       timestamp           NOT NULL,
 
     user_id         int                 NOT NULL
 );
