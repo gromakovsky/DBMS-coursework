@@ -41,6 +41,8 @@ INSERT INTO NodesInWays (node_index, node_id, way_id) VALUES (1, 100500, 14);
 INSERT INTO NodesInWays (node_index, node_id, way_id) VALUES (2, 14, 14);
 COMMIT;
 
+INSERT INTO WayTags (tag_value, way_id, tag_key) VALUES ('Route', 14, 'name');
+INSERT INTO WayTags (tag_value, way_id, tag_key) VALUES ('subway', 14, 'transport');
 -- Relations
 BEGIN;
 INSERT INTO Relations (relation_id, user_id) VALUES (13, 1);
