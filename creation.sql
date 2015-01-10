@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS NodesInWays
     node_id         bigint              NOT NULL REFERENCES Nodes(node_id),
     way_id          bigint              NOT NULL REFERENCES Ways(way_id),
 
-    UNIQUE(node_id, way_id)
+    UNIQUE(node_index, node_id, way_id)
 );
 
 CREATE TABLE IF NOT EXISTS WaysInRelations
