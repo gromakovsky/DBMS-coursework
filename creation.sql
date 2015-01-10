@@ -17,7 +17,8 @@ CREATE TABLE IF NOT EXISTS Ways
     version         int                 NOT NULL DEFAULT 1,
     timestamp       timestamp           NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    user_id         int                 NOT NULL
+    user_id         int                 NOT NULL,
+    node_id         bigint              NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Relations
@@ -76,6 +77,8 @@ CREATE TABLE IF NOT EXISTS NodesInWays
 
     UNIQUE(node_index, node_id, way_id)
 );
+
+ALTER TABLE Ways ADD FOREIGN KEY(node_id) REFERENCES Nodes(node_id);
 
 CREATE TABLE IF NOT EXISTS WaysInRelations
 (
