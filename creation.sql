@@ -254,7 +254,7 @@ CREATE TRIGGER check_node_in_way_trigger BEFORE INSERT OR UPDATE ON NodesInWays
 
 -- Views
 
-CREATE VIEW TagValuesCount AS
+CREATE OR REPLACE VIEW TagValuesCount AS
     SELECT tag_key, count(*) FROM
         (SELECT DISTINCT tag_key, tag_value FROM Tags INNER JOIN NodeTags USING (tag_key)
         UNION
@@ -262,4 +262,12 @@ CREATE VIEW TagValuesCount AS
         UNION
         SELECT DISTINCT tag_key, tag_value FROM Tags INNER JOIN RelationTags USING (tag_key)) AS Pairs
         GROUP BY tag_key;
+
+CREATE OR REPLACE VIEW SubwayStations AS
+    SELECT node_id FROM Nodes INNER JOIN NodeTags USING (node_id) WHERE tag_key = 'station' AND tag_value = 'subway';
+
+CREATE MATERIALIZED VIEW NamedSubwayStations AS
+    SELECT node_id, tag_value AS name FROM
+        (SELECT node_id FROM SubwayStations) AS node_ids NATURAL INNER JOIN NodeTags
+        WHERE tag_key = 'name';
 
