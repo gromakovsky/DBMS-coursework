@@ -9,6 +9,7 @@ INSERT INTO Users (user_id, user_name, email, password_hash, status) VALUES (390
 INSERT INTO Tags (tag_key, introduced_by) VALUES ('amenity', 101);
 INSERT INTO Tags (tag_key, introduced_by) VALUES ('name', 1);
 INSERT INTO Tags (tag_key, introduced_by) VALUES ('railway', 102);
+INSERT INTO Tags (tag_key, introduced_by) VALUES ('station', 101);
 INSERT INTO Tags (tag_key, introduced_by) VALUES ('transport', 2);
 INSERT INTO Tags (tag_key, introduced_by) VALUES ('name:en', 2);
 
@@ -20,6 +21,7 @@ INSERT INTO Nodes (node_id, latitude, longitude, user_id) VALUES (14, 69.9, 31.5
 
 INSERT INTO NodeTags (tag_value, node_id, tag_key) VALUES ('Адмиралтейская', 1440436739, 'name');
 INSERT INTO NodeTags (tag_value, node_id, tag_key) VALUES ('station', 1440436739, 'railway');
+INSERT INTO NodeTags (tag_value, node_id, tag_key) VALUES ('subway', 1440436739, 'station');
 INSERT INTO NodeTags (tag_value, node_id, tag_key) VALUES ('Admiralteyskaya', 1440436739, 'name:en');
 INSERT INTO NodeTags (tag_value, node_id, tag_key) VALUES ('subway', 1440436739, 'transport');
 
@@ -43,6 +45,7 @@ COMMIT;
 
 INSERT INTO WayTags (tag_value, way_id, tag_key) VALUES ('Route', 14, 'name');
 INSERT INTO WayTags (tag_value, way_id, tag_key) VALUES ('subway', 14, 'transport');
+
 -- Relations
 BEGIN;
 INSERT INTO Relations (relation_id, user_id) VALUES (13, 1);
