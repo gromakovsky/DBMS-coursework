@@ -179,3 +179,24 @@ CREATE CONSTRAINT TRIGGER check_erasing_way_from_relation_trigger AFTER DELETE O
     DEFERRABLE INITIALLY DEFERRED
     FOR EACH ROW EXECUTE PROCEDURE check_erasing_from_relation();
 
+-- 2. Update of every primitive must increment it's timestamp and version
+CREATE OR REPLACE FUNCTION check_timestamp_and_version() RETURNS trigger AS
+$check_timestamp_and_version_definition$
+BEGIN
+    IF OLD.version >= NEW.version OR OLD.timestamp >= NEW.timestamp THEN
+        RAISE EXCEPTION 'Update must increment version and timestamp';
+    END IF;
+    RETURN NEW;
+END;
+$check_timestamp_and_version_definition$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER check_node_timestamp_and_version_trigger BEFORE UPDATE ON Nodes
+    FOR EACH ROW EXECUTE PROCEDURE check_timestamp_and_version();
+
+CREATE TRIGGER check_way_timestamp_and_version_trigger BEFORE UPDATE ON Ways
+    FOR EACH ROW EXECUTE PROCEDURE check_timestamp_and_version();
+
+CREATE TRIGGER check_relation_timestamp_and_version_trigger BEFORE UPDATE ON Relations
+    FOR EACH ROW EXECUTE PROCEDURE check_timestamp_and_version();
+
