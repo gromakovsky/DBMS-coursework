@@ -146,6 +146,18 @@ END;
 $add_user_definition$
 LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION way_coordinates(id Ways.way_id%TYPE) RETURNS TABLE(lat Nodes.latitude%TYPE, lon Nodes.longitude%TYPE) AS
+$way_coordinates_definition$
+BEGIN
+    RETURN QUERY SELECT latitude, longitude from Ways INNER JOIN NodesInWays USING (way_id)
+                                                 INNER JOIN Nodes ON (NodesInWays.node_id = Nodes.node_id)
+                                                 WHERE Ways.way_id = id
+                                                 ORDER BY node_index;
+    RETURN;
+END;
+$way_coordinates_definition$
+LANGUAGE plpgsql;
+
 -- Other constraints
 
 -- 1. Relation contains at least two elements
