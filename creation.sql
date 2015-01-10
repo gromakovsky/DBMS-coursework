@@ -117,3 +117,19 @@ CREATE TABLE IF NOT EXISTS RelationTags
     UNIQUE(relation_id, tag_key)
 );
 
+-- Useful functions
+CREATE OR REPLACE FUNCTION relation_size(id relations.relation_id%TYPE) RETURNS int AS
+$relation_size_definition$
+DECLARE
+    nodes_count int;
+    ways_count int;
+BEGIN
+    SELECT count(*) FROM NodesInRelations WHERE relation_id = id
+        INTO nodes_count;
+    SELECT count(*) FROM WaysInRelations WHERE relation_id = id
+        INTO ways_count;
+    RETURN nodes_count + ways_count;
+END;
+$relation_size_definition$
+LANGUAGE plpgsql;
+
