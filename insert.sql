@@ -59,3 +59,5 @@ INSERT INTO WaysInRelations (role, way_id, relation_id) VALUES ('boundary', 14, 
 INSERT INTO NodesInRelations (role, node_id, relation_id) VALUES ('point', 10500, 130);
 COMMIT;
 
+REFRESH MATERIALIZED VIEW NamedSubwayStations;
+
