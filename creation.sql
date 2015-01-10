@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS Relations
 CREATE TABLE IF NOT EXISTS Tags
 (
     tag_key         text                PRIMARY KEY,
-    introduced_date date                NOT NULL,
+    introduced_date date                NOT NULL DEFAULT CURRENT_DATE,
     description     text                ,
 
     introduced_by   int                 NOT NULL
