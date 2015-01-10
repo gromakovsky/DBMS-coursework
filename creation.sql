@@ -271,3 +271,14 @@ CREATE MATERIALIZED VIEW NamedSubwayStations AS
         (SELECT node_id FROM SubwayStations) AS node_ids NATURAL INNER JOIN NodeTags
         WHERE tag_key = 'name';
 
+CREATE OR REPLACE VIEW UsersContribution AS
+    SELECT user_id, count(*) FROM
+        (SELECT user_id FROM Users NATURAL INNER JOIN Nodes
+        UNION ALL
+        SELECT user_id FROM Users NATURAL INNER JOIN Ways
+        UNION ALL
+        SELECT user_id FROM Users NATURAL INNER JOIN Relations
+        UNION ALL
+        SELECT user_id FROM Users INNER JOIN Tags ON (user_id = introduced_by)) AS Ids
+        GROUP BY user_id;
+
