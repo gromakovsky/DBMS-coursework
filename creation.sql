@@ -225,3 +225,30 @@ CREATE TRIGGER check_way_timestamp_and_version_trigger BEFORE UPDATE ON Ways
 CREATE TRIGGER check_relation_timestamp_and_version_trigger BEFORE UPDATE ON Relations
     FOR EACH ROW EXECUTE PROCEDURE check_timestamp_and_version();
 
+-- 3. I-th node can be inserted in way only if it already contains (i - 1) nodes. It should not be the same as the previous one
+
+CREATE OR REPLACE FUNCTION check_node_in_way() RETURNS trigger AS
+$check_node_in_way_definition$
+DECLARE
+    prev NodesInWays%ROWTYPE;
+BEGIN
+    IF NEW.node_index = 0 THEN
+        RETURN NEW;
+    END IF;
+    SELECT * FROM NodesInWays WHERE node_index = NEW.node_index - 1 AND
+                                    way_id = NEW.way_id
+             INTO prev;
+    IF NOT FOUND THEN
+        RAISE EXCEPTION 'Invalid node index';
+    END IF;
+    IF prev.node_id = NEW.node_id THEN
+        RAISE EXCEPTION 'Two subsequent nodes can not be the same';
+    END IF;
+    RETURN NEW;
+END;
+$check_node_in_way_definition$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER check_node_in_way_trigger BEFORE INSERT OR UPDATE ON NodesInWays
+    FOR EACH ROW EXECUTE PROCEDURE check_node_in_way();
+
