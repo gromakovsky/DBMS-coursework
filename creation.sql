@@ -133,6 +133,16 @@ END;
 $relation_size_definition$
 LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION add_user(id Users.user_id%TYPE, name Users.user_name%TYPE, email Users.email%TYPE, password_hash Users.password_hash%TYPE) RETURNS void AS
+$add_user_definition$
+BEGIN
+    IF NOT EXISTS(SELECT * FROM Users WHERE Users.user_id = id) THEN
+        INSERT INTO Users (user_id, user_name, email, password_hash, status) VALUES (id, name, email, password_hash, 'User');
+    END IF;
+END;
+$add_user_definition$
+LANGUAGE plpgsql;
+
 -- Other constraints
 
 -- 1. Relation contains at least two elements
