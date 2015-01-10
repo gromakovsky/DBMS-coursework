@@ -133,3 +133,49 @@ END;
 $relation_size_definition$
 LANGUAGE plpgsql;
 
+-- Other constraints
+
+-- 1. Relation contains at least two elements
+CREATE OR REPLACE FUNCTION check_relation_content() RETURNS trigger AS
+$check_relation_content_definition$
+DECLARE
+    count int;
+BEGIN
+    count := relation_size(NEW.relation_id);
+    IF count < 2 THEN
+        RAISE EXCEPTION 'Added relation must contain at least two elements';
+    END IF;
+    RETURN NEW;
+END;
+$check_relation_content_definition$
+LANGUAGE plpgsql;
+
+CREATE CONSTRAINT TRIGGER check_relation_content_trigger AFTER INSERT OR UPDATE ON Relations
+    DEFERRABLE INITIALLY DEFERRED
+    FOR EACH ROW EXECUTE PROCEDURE check_relation_content();
+
+-- It's impossible to modify node_id or way_id if it is referenced
+-- But it is possible to delete from NodesInRelations or WaysInRelations, so let's add triggers
+
+CREATE OR REPLACE FUNCTION check_erasing_from_relation() RETURNS trigger AS
+$check_erasing_node_from_relation_definition$
+DECLARE
+    count int;
+BEGIN
+    count := relation_size(OLD.relation_id);
+    IF count < 2 THEN
+        RAISE EXCEPTION 'At least two elements must be left in relation';
+    END IF;
+    RETURN NEW;
+END;
+$check_erasing_node_from_relation_definition$
+LANGUAGE plpgsql;
+
+CREATE CONSTRAINT TRIGGER check_erasing_node_from_relation_trigger AFTER DELETE OR UPDATE ON NodesInRelations
+    DEFERRABLE INITIALLY DEFERRED
+    FOR EACH ROW EXECUTE PROCEDURE check_erasing_from_relation();
+
+CREATE CONSTRAINT TRIGGER check_erasing_way_from_relation_trigger AFTER DELETE OR UPDATE ON WaysInRelations
+    DEFERRABLE INITIALLY DEFERRED
+    FOR EACH ROW EXECUTE PROCEDURE check_erasing_from_relation();
+
