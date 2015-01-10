@@ -252,3 +252,14 @@ LANGUAGE plpgsql;
 CREATE TRIGGER check_node_in_way_trigger BEFORE INSERT OR UPDATE ON NodesInWays
     FOR EACH ROW EXECUTE PROCEDURE check_node_in_way();
 
+-- Views
+
+CREATE VIEW TagValuesCount AS
+    SELECT tag_key, count(*) FROM
+        (SELECT DISTINCT tag_key, tag_value FROM Tags INNER JOIN NodeTags USING (tag_key)
+        UNION
+        SELECT DISTINCT tag_key, tag_value FROM Tags INNER JOIN WayTags USING (tag_key)
+        UNION
+        SELECT DISTINCT tag_key, tag_value FROM Tags INNER JOIN RelationTags USING (tag_key)) AS Pairs
+        GROUP BY tag_key;
+
