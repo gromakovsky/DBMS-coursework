@@ -241,8 +241,11 @@ CREATE CONSTRAINT TRIGGER check_erasing_way_from_relation_trigger AFTER DELETE O
 CREATE OR REPLACE FUNCTION check_timestamp_and_version() RETURNS trigger AS
 $check_timestamp_and_version_definition$
 BEGIN
-    IF OLD.version >= NEW.version OR OLD.timestamp >= NEW.timestamp THEN
-        RAISE EXCEPTION 'Update must increment version and timestamp';
+    IF OLD.version >= NEW.version THEN
+        RAISE EXCEPTION 'Update must increment version';
+    END IF;
+    IF OLD.timestamp > NEW.timestamp THEN
+        RAISE EXCEPTION 'Update can not decrease timestamp';
     END IF;
     RETURN NEW;
 END;
