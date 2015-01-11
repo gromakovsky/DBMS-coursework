@@ -3,8 +3,14 @@ DROP TABLE IF EXISTS NodesInRelations, NodesInWays, WaysInRelations, NodeTags, W
 
 DROP FUNCTION IF EXISTS relation_size(bigint);
 DROP FUNCTION IF EXISTS add_user(int, text, text, text);
+DROP FUNCTION IF EXISTS add_tag(text, int);
+DROP FUNCTION IF EXISTS way_coordinates(bigint);
+DROP FUNCTION IF EXISTS change_node_coordinates(bigint, double precision, double precision);
+DROP FUnCTION IF EXISTS tag_values(text);
 DROP FUNCTION IF EXISTS check_relation_content();
+DROP FUNCTION IF EXISTS check_erasing_from_relation();
 DROP FUNCTION IF EXISTS check_timestamp_and_version();
+DROP FUNCTION IF EXISTS check_node_in_way();
 
-DROP VIEW IF EXISTS TagValuesCount, NamedSubwayStations, UsersContribution;
+DROP VIEW IF EXISTS TagValuesCount, SubwayStations, NamedSubwayStations, UsersContribution;
 
