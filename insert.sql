@@ -29,7 +29,7 @@ INSERT INTO NodeTags (tag_value, node_id, tag_key) VALUES ('Сбербанк', 1
 
 -- Ways
 BEGIN;
-INSERT INTO Ways (way_id, user_id, node_id) VALUES (250, 1, 100500);
+INSERT INTO Ways (way_id, user_id, node_id) VALUES (250, 1, 10500);
 INSERT INTO NodesInWays (node_index, node_id, way_id) VALUES (0, 10500, 250);
 INSERT INTO NodesInWays (node_index, node_id, way_id) VALUES (1, 100500, 250);
 INSERT INTO NodesInWays (node_index, node_id, way_id) VALUES (2, 10500, 250);
@@ -37,7 +37,7 @@ INSERT INTO NodesInWays (node_index, node_id, way_id) VALUES (3, 14, 250);
 COMMIT;
 
 BEGIN;
-INSERT INTO Ways (way_id, user_id, node_id) VALUES (14, 1, 100500);
+INSERT INTO Ways (way_id, user_id, node_id) VALUES (14, 1, 14);
 INSERT INTO NodesInWays (node_index, node_id, way_id) VALUES (0, 14, 14);
 INSERT INTO NodesInWays (node_index, node_id, way_id) VALUES (1, 100500, 14);
 INSERT INTO NodesInWays (node_index, node_id, way_id) VALUES (2, 14, 14);
