@@ -146,6 +146,16 @@ END;
 $add_user_definition$
 LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION add_tag(tag_key Tags.tag_key%TYPE, user_id Users.user_id%TYPE) RETURNS void AS
+$add_tag_definition$
+BEGIN
+    IF NOT EXISTS(SELECT * FROM Tags WHERE Tags.tag_key = add_tag.tag_key) THEN
+        INSERT INTO Tags (tag_key, introduced_by) VALUES (tag_key, user_id);
+    END IF;
+END;
+$add_tag_definition$
+LANGUAGE plpgsql;
+
 CREATE OR REPLACE FUNCTION way_coordinates(id Ways.way_id%TYPE) RETURNS TABLE(lat Nodes.latitude%TYPE, lon Nodes.longitude%TYPE) AS
 $way_coordinates_definition$
 BEGIN
