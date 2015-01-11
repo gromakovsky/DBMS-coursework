@@ -200,7 +200,7 @@ DECLARE
 BEGIN
     count := relation_size(NEW.relation_id);
     IF count < 2 THEN
-        RAISE EXCEPTION 'Added relation must contain at least two elements';
+        RAISE EXCEPTION 'Added relation (%) must contain at least two elements', NEW.relation_id;
     END IF;
     RETURN NEW;
 END;
