@@ -168,6 +168,16 @@ END;
 $way_coordinates_definition$
 LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION change_node_coordinates(id Nodes.node_id%TYPE, lat Nodes.latitude%TYPE, lon Nodes.longitude%TYPE) RETURNS void AS
+$change_node_coordinates_definiton$
+DECLARE
+    old Nodes%ROWTYPE;
+BEGIN
+    UPDATE Nodes SET version = version + 1, latitude = lat, longitude = lon, timestamp = CURRENT_TIMESTAMP WHERE node_id = id;
+END;
+$change_node_coordinates_definiton$
+LANGUAGE plpgsql;
+
 -- Other constraints
 
 -- 1. Relation contains at least two elements
