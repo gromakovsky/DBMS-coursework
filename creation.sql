@@ -178,6 +178,18 @@ END;
 $change_node_coordinates_definiton$
 LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION tag_values(tag_key Tags.tag_key%TYPE) RETURNS SETOF NodeTags.tag_value%TYPE AS
+$tag_values_definition$
+DECLARE
+BEGIN
+    RETURN QUERY SELECT tag_value FROM NodeTags WHERE NodeTags.tag_key = tag_values.tag_key
+           UNION SELECT tag_value FROM WayTags WHERE WayTags.tag_key = tag_values.tag_key
+           UNION SELECT tag_value FROM RelationTags WHERE RelationTags.tag_key = tag_values.tag_key;
+    RETURN;
+END;
+$tag_values_definition$
+LANGUAGE plpgsql;
+
 -- Other constraints
 
 -- 1. Relation contains at least two elements
