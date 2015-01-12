@@ -163,7 +163,7 @@ BEGIN
     RETURN QUERY SELECT latitude, longitude from Ways INNER JOIN NodesInWays USING (way_id)
                                                  INNER JOIN Nodes ON (NodesInWays.node_id = Nodes.node_id)
                                                  WHERE Ways.way_id = id
-                                                 ORDER BY node_index;
+                                                 ORDER BY NodesInWays.node_index;
     RETURN;
 END;
 $way_coordinates_definition$
