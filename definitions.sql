@@ -317,11 +317,33 @@ CREATE OR REPLACE VIEW TagValuesCount AS
         GROUP BY tag_key;
 
 CREATE OR REPLACE VIEW SubwayStations AS
-    SELECT node_id FROM Nodes INNER JOIN NodeTags USING (node_id) WHERE tag_key = 'station' AND tag_value = 'subway';
+    SELECT node_id FROM filter_nodes_by_tag('station', 'subway');
+
+CREATE OR REPLACE VIEW Fuels AS
+    SELECT node_id FROM filter_nodes_by_tag('amenity', 'fuel');
+
+CREATE OR REPLACE VIEW PrimaryHighways AS
+    SELECT way_id FROM filter_ways_by_tag('highway', 'primary');
 
 CREATE MATERIALIZED VIEW NamedSubwayStations AS
-    SELECT node_id, tag_value AS name FROM
-        (SELECT node_id FROM SubwayStations) AS node_ids NATURAL INNER JOIN NodeTags
+    SELECT node_id AS id, latitude, longitude, tag_value AS name FROM
+        (SELECT node_id FROM SubwayStations) AS node_ids
+        NATURAL INNER JOIN Nodes
+        NATURAL INNER JOIN NodeTags
+        WHERE tag_key = 'name';
+
+CREATE MATERIALIZED VIEW NamedFuels AS
+    SELECT node_id AS id, latitude, longitude, tag_value AS name FROM
+        (SELECT node_id FROM Fuels) AS node_ids
+        NATURAL INNER JOIN Nodes
+        NATURAL INNER JOIN NodeTags
+        WHERE tag_key = 'name';
+
+CREATE MATERIALIZED VIEW NamedPrimaryHighways AS
+    SELECT way_id AS id, tag_value AS name FROM
+        (SELECT way_id FROM PrimaryHighways) AS way_ids
+        NATURAL INNER JOIN Ways
+        NATURAL INNER JOIN WayTags
         WHERE tag_key = 'name';
 
 CREATE OR REPLACE VIEW UsersContribution AS
