@@ -368,3 +368,11 @@ CREATE OR REPLACE VIEW UsersContribution AS
         SELECT user_id FROM Users INNER JOIN Tags ON (user_id = introduced_by)) AS Ids
         GROUP BY user_id;
 
+CREATE OR REPLACE VIEW TagsCounts AS
+    SELECT 'Node'::text AS type, node_id AS id, count(*) FROM Nodes INNER JOIN NodeTags USING (node_id) GROUP BY node_id
+    UNION
+    SELECT 'Way'::text AS type, way_id AS id, count(*) FROM ways INNER JOIN WayTags USING (way_id) GROUP BY way_id
+    UNION
+    SELECT 'Relation'::text AS type, relation_id AS id, count(*) FROM Relations INNER JOIN RelationTags USING (relation_id) GROUP BY relation_id
+    ORDER BY count DESC;
+
