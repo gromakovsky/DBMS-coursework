@@ -326,14 +326,14 @@ CREATE OR REPLACE VIEW PrimaryHighways AS
     SELECT way_id FROM filter_ways_by_tag('highway', 'primary');
 
 CREATE MATERIALIZED VIEW NamedSubwayStations AS
-    SELECT node_id AS id, latitude, longitude, tag_value AS name FROM
+    SELECT node_id AS id, ('(' || latitude || ', ' || longitude || ')') :: point AS coordinates, tag_value AS name FROM
         (SELECT node_id FROM SubwayStations) AS node_ids
         NATURAL INNER JOIN Nodes
         NATURAL INNER JOIN NodeTags
         WHERE tag_key = 'name';
 
 CREATE MATERIALIZED VIEW NamedFuels AS
-    SELECT node_id AS id, latitude, longitude, tag_value AS name FROM
+    SELECT node_id AS id, ('(' || latitude || ', ' || longitude || ')') :: point AS coordinates, tag_value AS name FROM
         (SELECT node_id FROM Fuels) AS node_ids
         NATURAL INNER JOIN Nodes
         NATURAL INNER JOIN NodeTags
