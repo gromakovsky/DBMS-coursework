@@ -11,8 +11,9 @@ DROP FUNCTION IF EXISTS check_relation_content();
 DROP FUNCTION IF EXISTS check_erasing_from_relation();
 DROP FUNCTION IF EXISTS check_timestamp_and_version();
 DROP FUNCTION IF EXISTS check_node_in_way();
+DROP FUNCTION IF EXISTS closest_subway_stations(point);
 
-DROP VIEW IF EXISTS TagValuesCount, SubwayStations, UsersContribution;
+DROP VIEW IF EXISTS TagValuesCount, SubwayStations, UsersContribution, TagsCounts;
 DROP MATERIALIZED VIEW IF EXISTS NamedSubwayStations;
 DROP MATERIALIZED VIEW IF EXISTS NamedFuels;
 DROP MATERIALIZED VIEW IF EXISTS NamedPrimaryHighways;
