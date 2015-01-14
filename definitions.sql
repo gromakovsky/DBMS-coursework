@@ -190,6 +190,24 @@ END;
 $tag_values_definition$
 LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION filter_nodes_by_tag(tag_key Tags.tag_key%TYPE, tag_value NodeTags.tag_value%TYPE) RETURNS TABLE(node_id Nodes.node_id%TYPE) AS
+$filter_nodes_by_tag_definition$
+BEGIN
+    RETURN QUERY SELECT Nodes.node_id FROM Nodes INNER JOIN NodeTags USING (node_id) WHERE NodeTags.tag_key = filter_nodes_by_tag.tag_key AND NodeTags.tag_value = filter_nodes_by_tag.tag_value;
+    RETURN;
+END;
+$filter_nodes_by_tag_definition$
+LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION filter_ways_by_tag(tag_key Tags.tag_key%TYPE, tag_value WayTags.tag_value%TYPE) RETURNS TABLE(way_id Ways.way_id%TYPE) AS
+$filter_ways_by_tag_definition$
+BEGIN
+    RETURN QUERY SELECT Ways.way_id FROM Ways INNER JOIN WayTags USING (way_id) WHERE WayTags.tag_key = filter_ways_by_tag.tag_key AND WayTags.tag_value = filter_ways_by_tag.tag_value;
+    RETURN;
+END;
+$filter_ways_by_tag_definition$
+LANGUAGE plpgsql;
+
 -- Other constraints
 
 -- 1. Relation contains at least two elements
