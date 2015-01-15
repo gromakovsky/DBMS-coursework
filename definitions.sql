@@ -123,10 +123,13 @@ CREATE TABLE IF NOT EXISTS RelationTags
 
 -- Indexes
 CREATE INDEX NodeTagsIdIndex ON NodeTags (node_id);
+CREATE INDEX NodeTagsKeyIndex ON NodeTags (tag_key);
 CREATE INDEX NodeTagsValueIndex ON NodeTags (tag_value);
 CREATE INDEX WayTagsIdIndex ON WayTags (way_id);
+CREATE INDEX WayTagsKeyIndex ON WayTags (tag_key);
 CREATE INDEX WayTagsValueIndex ON WayTags (tag_value);
 CREATE INDEX RelationTagsIdIndex ON RelationTags (relation_id);
+CREATE INDEX RelationTagsKeyIndex ON RelationTags (tag_key);
 CREATE INDEX RelationTagsValueIndex ON RelationTags (tag_value);
 
 CREATE INDEX NodesInWaysNodeIdIndex ON NodesInWays (node_id);
