@@ -121,6 +121,21 @@ CREATE TABLE IF NOT EXISTS RelationTags
     UNIQUE(relation_id, tag_key)
 );
 
+-- Indexes
+CREATE INDEX NodeTagsIdIndex ON NodeTags (node_id);
+CREATE INDEX NodeTagsValueIndex ON NodeTags (tag_value);
+CREATE INDEX WayTagsIdIndex ON WayTags (way_id);
+CREATE INDEX WayTagsValueIndex ON WayTags (tag_value);
+CREATE INDEX RelationTagsIdIndex ON RelationTags (relation_id);
+CREATE INDEX RelationTagsValueIndex ON RelationTags (tag_value);
+
+CREATE INDEX NodesInWaysNodeIdIndex ON NodesInWays (node_id);
+CREATE INDEX NodesInWaysWayIdIndex ON NodesInWays (way_id);
+CREATE INDEX NodesInRelationsNodeIdIndex ON NodesInRelations (node_id);
+CREATE INDEX NodesInRelationsRelationIdIndex ON NodesInRelations (relation_id);
+CREATE INDEX WaysInRelationsWayIdIndex ON WaysInRelations (way_id);
+CREATE INDEX WaysInRelationsRelationIdIndex ON WaysInRelations (relation_id);
+
 -- Useful functions
 CREATE OR REPLACE FUNCTION relation_size(id relations.relation_id%TYPE) RETURNS int AS
 $relation_size_definition$
