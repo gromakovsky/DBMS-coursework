@@ -305,7 +305,7 @@ LANGUAGE plpgsql;
 CREATE TRIGGER check_node_in_way_trigger BEFORE INSERT OR UPDATE ON NodesInWays
     FOR EACH ROW EXECUTE PROCEDURE check_node_in_way();
 
--- Views and indexes
+-- Views and indexes on materialized views
 
 CREATE OR REPLACE VIEW TagValuesCount AS
     SELECT tag_key, count(*) FROM
@@ -333,14 +333,16 @@ CREATE MATERIALIZED VIEW NamedSubwayStations AS
         WHERE tag_key = 'name';
 
 CREATE INDEX SubwayStationsIndex ON NamedSubwayStations USING gist (coordinates);
-CREATE OR REPLACE FUNCTION closest_subway_stations(p point) RETURNS TABLE(coordinates point, name text) AS
-$closest_subway_stations_definition$
-BEGIN
-    RETURN QUERY SELECT NamedSubwayStations.coordinates, NamedSubwayStations.name FROM NamedSubwayStations ORDER BY NamedSubwayStations.coordinates <-> p LIMIT 10;
-    RETURN;
-END;
-$closest_subway_stations_definition$
-LANGUAGE plpgsql;
+-- example
+    CREATE OR REPLACE FUNCTION closest_subway_stations(p point) RETURNS TABLE(coordinates point, name text) AS
+    $closest_subway_stations_definition$
+    BEGIN
+        RETURN QUERY SELECT NamedSubwayStations.coordinates, NamedSubwayStations.name FROM NamedSubwayStations ORDER BY NamedSubwayStations.coordinates <-> p LIMIT 10;
+        RETURN;
+    END;
+    $closest_subway_stations_definition$
+    LANGUAGE plpgsql;
+--
 
 CREATE MATERIALIZED VIEW NamedFuels AS
     SELECT node_id AS id, ('(' || latitude || ', ' || longitude || ')') :: point AS coordinates, tag_value AS name FROM
